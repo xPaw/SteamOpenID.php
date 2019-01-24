@@ -74,7 +74,7 @@ class SteamOpenID
 		$c = curl_init( );
 
 		curl_setopt_array( $c, [
-			CURLOPT_USERAGENT      => 'Steam Database OpenID Login',
+			CURLOPT_USERAGENT      => 'OpenID Verification (+https://github.com/xPaw/SteamOpenID.php)',
 			CURLOPT_URL            => 'https://steamcommunity.com/openid/login',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_CONNECTTIMEOUT => 6,
