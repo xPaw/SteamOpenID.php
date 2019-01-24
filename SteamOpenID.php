@@ -85,8 +85,6 @@ class SteamOpenID
 
 		$Response = curl_exec( $c );
 
-		StatsD::curlRequest( 'steam.openid', $c );
-
 		curl_close( $c );
 
 		if( $Response !== false && strrpos( $Response, 'is_valid:true' ) !== false )
