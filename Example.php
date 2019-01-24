@@ -25,7 +25,7 @@ else
 		<input type="hidden" name="openid.mode" value="checkid_setup">
 		<input type="hidden" name="openid.realm" value="https://localhost/">
 		<input type="hidden" name="openid.return_to" value="https://localhost/login/Example.php">
-		<button type="submit" class="btn btn-steam" id="js-sign-in">Sign in through Steam</button>
+		<input type="image" name="submit" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" border="0" alt="Submit">
 	</form>
 <?php
 }
