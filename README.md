@@ -3,7 +3,7 @@
 A very minimalistic OpenID implementation that hardcodes it for Steam only,
 as using a generic OpenID library may do unnecessary steps of “discovering”
 OpenID servers, which will end up leaking your origin server address, and worse,
-leave you vulnerabilities of claiming wrong Steam profiles if the implementation is bugged.
+leave your website open to vulnerabilities of claiming wrong Steam profiles if the implementation is bugged.
 
 The described problems are not theoretical, LightOpenID
 [has been proven](https://twitter.com/thexpaw/status/1088207320977412097)
