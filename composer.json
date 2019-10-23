@@ -1,0 +1,25 @@
+{
+	"name": "xpaw/steam-openid",
+	"description": "A correct and simple implementation of OpenID authentication for Steam",
+	"license": "MIT",
+	"homepage": "https://github.com/xPaw/SteamOpenID.php",
+	"keywords":
+	[
+		"steam",
+		"valve",
+		"openid",
+		"steamcommunity",
+	],
+	"require":
+	{
+		"php": ">=7.2",
+		"ext-curl": "*"
+	},
+	"autoload":
+	{
+		"files":
+		[
+			"SteamOpenID.php"
+		]
+	}
+}
