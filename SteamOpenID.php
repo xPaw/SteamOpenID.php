@@ -26,6 +26,8 @@ class SteamOpenID
 	 */
 	public static function ValidateLogin( string $SelfURL ) : ?string
 	{
+		// PHP automatically replaces dots with underscores in GET parameters
+		// See https://www.php.net/variables.external#language.variables.external.dot-in-names
 		if( filter_input( INPUT_GET, 'openid_mode' ) !== 'id_res' )
 		{
 			return null;
