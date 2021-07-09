@@ -40,7 +40,7 @@ class SteamOpenID
 			'openid_claimed_id' => FILTER_SANITIZE_URL,
 			'openid_identity' => FILTER_SANITIZE_URL,
 			'openid_return_to' => FILTER_SANITIZE_URL, // Should equal to url we sent
-			'openid_response_nonce' => FILTER_SANITIZE_STRING,
+			'openid_response_nonce' => FILTER_SANITIZE_SPECIAL_CHARS,
 			'openid_assoc_handle' => FILTER_SANITIZE_SPECIAL_CHARS, // Steam just sends 1234567890
 			'openid_signed' => FILTER_SANITIZE_SPECIAL_CHARS,
 			'openid_sig' => FILTER_SANITIZE_SPECIAL_CHARS
