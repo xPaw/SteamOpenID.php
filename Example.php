@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/vendor/autoload.php';
+
+use xPaw\Steam\SteamOpenID;
+
 if( isset( $_GET[ 'openid_claimed_id' ] ) )
 {
 	$CommunityID = SteamOpenID::ValidateLogin( 'https://localhost/login/Example.php' );

@@ -17,9 +17,9 @@
 	},
 	"autoload":
 	{
-		"files":
-		[
-			"SteamOpenID.php"
-		]
+		"psr-4":
+		{
+			"xPaw\\Steam\\": "src/"
+		}
 	}
 }
