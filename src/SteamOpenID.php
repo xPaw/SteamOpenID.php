@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace xPaw\Steam;
+
 /**
  * A correct and simple implementation of OpenID authentication for Steam.
  *
