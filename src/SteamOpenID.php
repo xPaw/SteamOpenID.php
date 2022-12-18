@@ -88,14 +88,52 @@ class SteamOpenID
 		] );
 
 		$Response = curl_exec( $c );
+		$Code = curl_getinfo( $c, CURLINFO_HTTP_CODE );
 
 		curl_close( $c );
 
-		if( $Response !== false && strrpos( $Response, 'is_valid:true' ) !== false )
+		if( $Code !== 200 )
 		{
-			return $CommunityID[ 1 ];
+			return null;
 		}
 
-		return null;
+		$KeyValues = self::ParseKeyValues( (string)$Response );
+
+		if( ( $KeyValues[ 'ns' ] ?? null ) !== 'http://specs.openid.net/auth/2.0' )
+		{
+			return null;
+		}
+
+		if( ( $KeyValues[ 'is_valid' ] ?? null ) !== 'true' )
+		{
+			return null;
+		}
+
+		return $CommunityID[ 1 ];
+	}
+
+	/** @return array<string, string> */
+	private static function ParseKeyValues( string $Response ) : array
+	{
+		// A message in Key-Value form is a sequence of lines. Each line begins with a key,
+		// followed by a colon, and the value associated with the key. The line is terminated
+		// by a single newline (UCS codepoint 10, "\n"). A key or value MUST NOT contain a
+		// newline and a key also MUST NOT contain a colon.
+		$ResponseLines = explode( "\n", (string)$Response );
+		$ResponseKeys = [];
+
+		foreach( $ResponseLines as $Line )
+		{
+			$Pair = explode( ':', $Line, 2 );
+
+			if( !isset( $Pair[ 1 ] ) )
+			{
+				continue;
+			}
+
+			$ResponseKeys[ $Pair[ 0 ] ] = $Pair[ 1 ];
+		}
+
+		return $ResponseKeys;
 	}
 }
