@@ -178,7 +178,7 @@ class SteamOpenID
 			'openid_response_nonce' => FILTER_UNSAFE_RAW,
 			'openid_assoc_handle' => FILTER_UNSAFE_RAW, // Steam just sends 1234567890
 			'openid_signed' => FILTER_UNSAFE_RAW,
-			'openid_sig' => FILTER_SANITIZE_URL
+			'openid_sig' => FILTER_UNSAFE_RAW
 		];
 
 		if( $this->InputParameters === null )
