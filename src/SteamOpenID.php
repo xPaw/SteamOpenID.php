@@ -38,7 +38,7 @@ class SteamOpenID
 	public function __construct( string $SelfURL, ?array $Params = null )
 	{
 		$this->SelfURL = $SelfURL;
-		$this->InputParameters = $Params ?? $_GET;
+		$this->InputParameters = $Params;
 	}
 
 	/**
@@ -194,13 +194,13 @@ class SteamOpenID
 			throw new InvalidArgumentException( 'Parameter filter failed.' );
 		}
 
-		foreach( $Arguments as $Value )
+		foreach( $Arguments as $Key => $Value )
 		{
 			// An array value will be FALSE if the filter fails, or NULL if the variable is not set.
 			// In our case we want everything to be a string.
-			if( !is_string( $Value ) )
+			if( empty( $Value ) || !is_string( $Value ) )
 			{
-				throw new InvalidArgumentException( 'One of the parameters were unexpected.' );
+				throw new InvalidArgumentException( 'Parameter ' . $Key . ' is not a string' );
 			}
 		}
 
