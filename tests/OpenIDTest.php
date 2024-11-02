@@ -172,7 +172,7 @@ class TestOpenID extends SteamOpenID
 {
 	public bool $RequestWasSent = false;
 
-	#[\Override]
+	//#[\Override] - php 8.3
 	public function SendSteamRequest( array $Arguments ) : array
 	{
 		$this->RequestWasSent = true;
