@@ -26,10 +26,10 @@ class SteamOpenID
 	private const OPENID_NS = 'http://specs.openid.net/auth/2.0';
 	private const EXPECTED_SIGNED = 'signed,op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle';
 
-	private string $SelfURL;
+	private readonly string $SelfURL;
 
 	/** @var ?array<string, mixed> */
-	protected ?array $InputParameters;
+	protected readonly ?array $InputParameters;
 
 	/**
 	 * @param string $SelfURL URL to return to from Steam, this will also validate the "openid.return_to" parameter
