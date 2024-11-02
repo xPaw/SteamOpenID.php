@@ -8,7 +8,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 final class OpenIDTest extends TestCase
 {
-	private const array DefaultInput =
+	private const DefaultInput = // TODO: php 8.3 type to "array"
 	[
 		'openid_mode' => 'id_res',
 		'openid_ns' => 'http://specs.openid.net/auth/2.0',
