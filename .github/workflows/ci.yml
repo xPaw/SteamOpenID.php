@@ -1,0 +1,31 @@
+name: CI
+
+permissions:
+  contents: read
+
+on: [push]
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.1', '8.2', '8.3']
+
+    steps:
+    - name: Checkout
+	  uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Install dependencies
+      run: composer install --no-interaction --no-progress
+
+    - name: Run tests
+      run: composer test
+
+    - name: Run phpstan
+      run: composer run phpstan

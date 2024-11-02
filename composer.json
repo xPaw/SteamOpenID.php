@@ -10,10 +10,17 @@
 		"openid",
 		"steamcommunity"
 	],
+	"scripts":
+	{
+		"test": "phpunit tests --coverage-text"
+	},
 	"require":
 	{
-		"php": ">=7.2",
+		"php": ">=8.0",
 		"ext-curl": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^11"
 	},
 	"autoload":
 	{
