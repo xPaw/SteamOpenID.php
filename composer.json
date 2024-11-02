@@ -12,7 +12,7 @@
 	],
 	"scripts":
 	{
-		"test": "phpunit tests --coverage-text"
+		"test": "phpunit"
 	},
 	"require":
 	{
