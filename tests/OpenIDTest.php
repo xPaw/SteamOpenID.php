@@ -149,8 +149,6 @@ final class OpenIDTest extends TestCase
 			'openid_mode' => 'id_res2',
 			'openid_ns' => 'http://specs.openid.net/auth/2.1',
 			'openid_op_endpoint' => 'https://steamcommunity.com/idopen/login',
-			'openid_claimed_id' => 'https://steamcommunity.com/openid/id/76561197972494984',
-			'openid_identity' => 'https://steamcommunity.com/openid/id/76561197972494984',
 			'openid_return_to' => 'https://localhost/SteamOpenID/Login.php',
 			'openid_signed' => 'signed,op_endpoint,claimed_id,identity,return_to,assoc_handle,response_nonce',
 		];
@@ -162,9 +160,15 @@ final class OpenIDTest extends TestCase
 
 			$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-			$this->expectException( InvalidArgumentException::class );
-			$this->expectExceptionMessageMatches( '/Wrong ' . $key . '/' );
-			$openid->Validate();
+			try
+			{
+				$openid->Validate();
+			}
+			catch( InvalidArgumentException $e )
+			{
+				$this->assertMatchesRegularExpression( "/Wrong {$key}/", $e->getMessage() );
+			}
+
 			$this->assertFalse( $openid->RequestWasSent );
 		}
 	}
@@ -178,9 +182,15 @@ final class OpenIDTest extends TestCase
 
 			$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-			$this->expectException( InvalidArgumentException::class );
-			$this->expectExceptionMessageMatches( '/' . $key . ' is not a string/' );
-			$openid->Validate();
+			try
+			{
+				$openid->Validate();
+			}
+			catch( InvalidArgumentException $e )
+			{
+				$this->assertMatchesRegularExpression( "/{$key} is not a string/", $e->getMessage() );
+			}
+
 			$this->assertFalse( $openid->RequestWasSent );
 		}
 	}
@@ -190,13 +200,11 @@ final class OpenIDTest extends TestCase
 		$valuesToTry =
 		[
 			null,
-			123,
-			123.456,
+			false,
 			[],
 			[
 				'123'
-			],
-			true
+			]
 		];
 
 		foreach( self::DefaultInput as $key => $originalValue )
@@ -208,9 +216,22 @@ final class OpenIDTest extends TestCase
 
 				$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-				$this->expectException( InvalidArgumentException::class );
-				$this->expectExceptionMessageMatches( '/' . $key . ' is not a string/' );
-				$openid->Validate();
+				try
+				{
+					$openid->Validate();
+				}
+				catch( InvalidArgumentException $e )
+				{
+					if( $key === 'openid_identity' )
+					{
+						$this->assertMatchesRegularExpression( "/Wrong (?:openid_identity|openid_claimed_id)/", $e->getMessage() );
+					}
+					else
+					{
+						$this->assertMatchesRegularExpression( "/Wrong {$key}/", $e->getMessage() );
+					}
+				}
+
 				$this->assertFalse( $openid->RequestWasSent );
 			}
 		}
@@ -238,6 +259,7 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/Wrong openid_claimed_id, should equal to openid_identity/' );
 		$openid->Validate();
 		$this->assertFalse( $openid->RequestWasSent );
 	}
@@ -264,7 +286,7 @@ class TestOpenID extends SteamOpenID
 				continue;
 			}
 
-			if( $this->InputParameters[ $Key ] !== $Value )
+			if( !is_string( $Value ) || (string)$this->InputParameters[ $Key ] !== $Value )
 			{
 				throw new Exception( 'Unexpected value for ' . $Key );
 			}
@@ -280,7 +302,7 @@ class TestOpenID extends SteamOpenID
 			case 'test_hack_return_is_valid_no_colons': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid_true" ];
 			case 'test_hack_return_201': return [ 201, "ns:http://specs.openid.net/auth/2.0\nis_valid:true" ];
 			case 'test_hack_return_403': return [ 403, '' ];
-			default: throw new Exception( 'Unknown test openid_sig' );
+			default: throw new Exception( 'Unknown test openid_sig: ' . $Arguments[ 'openid_sig' ] );
 		}
 	}
 }

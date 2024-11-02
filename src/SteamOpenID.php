@@ -60,7 +60,7 @@ class SteamOpenID
 
 		if( $Arguments[ 'openid_claimed_id' ] !== $Arguments[ 'openid_identity' ] )
 		{
-			throw new InvalidArgumentException( 'Mismatched claimed_id to identity.' );
+			throw new InvalidArgumentException( 'Wrong openid_claimed_id, should equal to openid_identity.' );
 		}
 
 		if( $Arguments[ 'openid_ns' ] !== self::OPENID_NS )
@@ -201,7 +201,7 @@ class SteamOpenID
 			// In our case we want everything to be a string.
 			if( empty( $Value ) || !is_string( $Value ) )
 			{
-				throw new InvalidArgumentException( 'Parameter ' . $Key . ' is not a string' );
+				throw new InvalidArgumentException( 'Wrong ' . $Key . ' is not a string' );
 			}
 		}
 
