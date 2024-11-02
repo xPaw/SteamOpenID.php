@@ -61,6 +61,34 @@ final class OpenIDTest extends TestCase
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
+	public function testFailLoginBadResponse2() : void
+	{
+		$input = self::DefaultInput;
+		$input[ 'openid_sig' ] = 'test_hack_return_is_valid_more_colons';
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		$this->assertTrue( $openid->ShouldValidate() );
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessageMatches( '/Failed to verify/' );
+		$openid->Validate();
+		$this->assertTrue( $openid->RequestWasSent );
+	}
+
+	public function testFailLoginBadResponse3() : void
+	{
+		$input = self::DefaultInput;
+		$input[ 'openid_sig' ] = 'test_hack_return_is_valid_no_colons';
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		$this->assertTrue( $openid->ShouldValidate() );
+		$this->expectException( Exception::class );
+		$this->expectExceptionMessageMatches( '/Failed to verify/' );
+		$openid->Validate();
+		$this->assertTrue( $openid->RequestWasSent );
+	}
+
 	public function testFailLoginFor403Response() : void
 	{
 		$input = self::DefaultInput;
@@ -135,9 +163,56 @@ final class OpenIDTest extends TestCase
 			$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 			$this->expectException( InvalidArgumentException::class );
-			$this->expectExceptionMessageMatches( '/' . $key . '/' );
+			$this->expectExceptionMessageMatches( '/Wrong ' . $key . '/' );
 			$openid->Validate();
 			$this->assertFalse( $openid->RequestWasSent );
+		}
+	}
+
+	public function testShouldThrowForMissingParameter() : void
+	{
+		foreach( self::DefaultInput as $key => $value )
+		{
+			$input = self::DefaultInput;
+			unset( $input[ $key ] );
+
+			$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+			$this->expectException( InvalidArgumentException::class );
+			$this->expectExceptionMessageMatches( '/' . $key . ' is not a string/' );
+			$openid->Validate();
+			$this->assertFalse( $openid->RequestWasSent );
+		}
+	}
+
+	public function testShouldThrowForNonStringParameter() : void
+	{
+		$valuesToTry =
+		[
+			null,
+			123,
+			123.456,
+			[],
+			[
+				'123'
+			],
+			true
+		];
+
+		foreach( self::DefaultInput as $key => $originalValue )
+		{
+			foreach( $valuesToTry as $value )
+			{
+				$input = self::DefaultInput;
+				$input[ $key ] = $value;
+
+				$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+				$this->expectException( InvalidArgumentException::class );
+				$this->expectExceptionMessageMatches( '/' . $key . ' is not a string/' );
+				$openid->Validate();
+				$this->assertFalse( $openid->RequestWasSent );
+			}
 		}
 	}
 
@@ -201,6 +276,8 @@ class TestOpenID extends SteamOpenID
 			case 'test_hack_validate_as_false': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid:false" ];
 			case 'test_hack_wrong_openid_ns': return [ 200, "ns:http://specs.openid.net/auth/2.1\nis_valid:true" ];
 			case 'test_hack_return_bad_response': return [ 200, "ns:http://specs.openid.net/auth/2.0\n_is_valid:true" ];
+			case 'test_hack_return_is_valid_more_colons': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid:true:is_valid:true" ];
+			case 'test_hack_return_is_valid_no_colons': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid_true" ];
 			case 'test_hack_return_201': return [ 201, "ns:http://specs.openid.net/auth/2.0\nis_valid:true" ];
 			case 'test_hack_return_403': return [ 403, '' ];
 			default: throw new Exception( 'Unknown test openid_sig' );
