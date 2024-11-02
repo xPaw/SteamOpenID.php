@@ -18,8 +18,33 @@ Before using this library, [please read Valve's terms here](https://steamcommuni
 
 ## Installation
 
-```bash
-composer require xpaw/steam-openid
-```
+`composer require xpaw/steam-openid`
 
 See [Example.php](Example.php) file for example usage.
+
+### Basic usage
+
+```php
+use xPaw\Steam\SteamOpenID;
+
+$SteamOpenID = new SteamOpenID( $ReturnToUrl );
+
+if( $SteamOpenID->ShouldValidate() )
+{
+	try
+	{
+		$CommunityID = $SteamOpenID->Validate();
+		echo 'Logged in as ' . $SteamID;
+	}
+	catch( Exception $e )
+	{
+		echo 'Login failed';
+	}
+}
+else
+{
+	header( 'Location: ' . $SteamOpenID->GetAuthUrl() );
+}
+```
+
+If you want to parse SteamIDs, take a look at [SteamID.php](https://github.com/xPaw/SteamID.php).
