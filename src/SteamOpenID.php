@@ -28,12 +28,12 @@ class SteamOpenID
 
 	private string $SelfURL;
 
-	/** @var ?array<string, string> */
+	/** @var ?array<string, mixed> */
 	protected ?array $InputParameters;
 
 	/**
 	 * @param string $SelfURL URL to return to from Steam, this will also validate the "openid.return_to" parameter
-	 * @param ?array<string, string> $Params Request parameters provided in the GET parameters
+	 * @param ?array<string, mixed> $Params Request parameters provided in the GET parameters
 	 */
 	public function __construct( string $SelfURL, ?array $Params = null )
 	{
@@ -199,7 +199,7 @@ class SteamOpenID
 		{
 			// An array value will be FALSE if the filter fails, or NULL if the variable is not set.
 			// In our case we want everything to be a string.
-			if( empty( $Value ) || !is_string( $Value ) )
+			if( empty( $Value ) || !is_string( $Value ) ) // @phpstan-ignore-line
 			{
 				throw new InvalidArgumentException( 'Wrong ' . $Key . ' is not a string' );
 			}
