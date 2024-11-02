@@ -139,6 +139,7 @@ class SteamOpenID
 	 *
 	 * You can override this method to send the request yourself.
 	 *
+	 * @codeCoverageIgnore
 	 * @param array<string, string> $Arguments Parameters to send as POST fields.
 	 * @return array{0: int, 1: string} A tuple that contains [http code as int, response as string]
 	 */
