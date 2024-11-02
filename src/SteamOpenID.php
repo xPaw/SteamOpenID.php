@@ -22,23 +22,52 @@ use InvalidArgumentException;
  */
 class SteamOpenID
 {
-	public const STEAM_LOGIN = 'https://steamcommunity.com/openid/login';
+	public const SERVER = 'https://steamcommunity.com/openid/login';
 	private const OPENID_NS = 'http://specs.openid.net/auth/2.0';
 	private const EXPECTED_SIGNED = 'signed,op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle';
 
-	private readonly string $SelfURL;
+	/**
+	 * URL to return to from Steam, this will also validate the "openid.return_to" parameter.
+	 */
+	public readonly string $ReturnURL;
 
 	/** @var ?array<string, mixed> */
 	protected readonly ?array $InputParameters;
 
 	/**
-	 * @param string $SelfURL URL to return to from Steam, this will also validate the "openid.return_to" parameter
+	 * @param string $ReturnURL URL to return to from Steam, this will also validate the "openid.return_to" parameter
 	 * @param ?array<string, mixed> $Params Request parameters provided in the GET parameters
 	 */
-	public function __construct( string $SelfURL, ?array $Params = null )
+	public function __construct( string $ReturnURL, ?array $Params = null )
 	{
-		$this->SelfURL = $SelfURL;
+		$this->ReturnURL = $ReturnURL;
 		$this->InputParameters = $Params;
+	}
+
+	/**
+	 * Get the Steam login url.
+	 *
+	 * @return string The authentication url.
+	 */
+	public function GetAuthUrl() : string
+	{
+		return SteamOpenID::SERVER . '?' . http_build_query( $this->GetAuthParameters() );
+	}
+
+	/**
+	 * Get the OpenID parameters to be rendered as form <input> variables or to construct the redirect url.
+	 *
+	 * @return array<string, string>
+	 */
+	public function GetAuthParameters() : array
+	{
+		return [
+			'openid.identity' => 'http://specs.openid.net/auth/2.0/identifier_select',
+			'openid.claimed_id' => 'http://specs.openid.net/auth/2.0/identifier_select',
+			'openid.ns' => 'http://specs.openid.net/auth/2.0',
+			'openid.mode' => 'checkid_setup',
+			'openid.return_to' => $this->ReturnURL,
+		];
 	}
 
 	/**
@@ -68,7 +97,7 @@ class SteamOpenID
 			throw new InvalidArgumentException( 'Wrong openid_ns.' );
 		}
 
-		if( $Arguments[ 'openid_op_endpoint' ] !== self::STEAM_LOGIN )
+		if( $Arguments[ 'openid_op_endpoint' ] !== self::SERVER )
 		{
 			throw new InvalidArgumentException( 'Wrong openid_op_endpoint.' );
 		}
@@ -78,7 +107,7 @@ class SteamOpenID
 			throw new InvalidArgumentException( 'Wrong openid_signed.' );
 		}
 
-		if( !str_starts_with( $Arguments[ 'openid_return_to' ], $this->SelfURL ) )
+		if( !str_starts_with( $Arguments[ 'openid_return_to' ], $this->ReturnURL ) )
 		{
 			throw new InvalidArgumentException( 'Wrong openid_return_to.' );
 		}
@@ -150,7 +179,7 @@ class SteamOpenID
 		curl_setopt_array( $c, [
 			CURLOPT_USERAGENT      => 'OpenID Verification (+https://github.com/xPaw/SteamOpenID.php)',
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_URL            => self::STEAM_LOGIN,
+			CURLOPT_URL            => self::SERVER,
 			CURLOPT_CONNECTTIMEOUT => 6,
 			CURLOPT_TIMEOUT        => 6,
 			CURLOPT_POST           => true,

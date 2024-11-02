@@ -266,6 +266,37 @@ final class OpenIDTest extends TestCase
 		$openid->Validate();
 		$this->assertFalse( $openid->RequestWasSent );
 	}
+
+	public function testAuthUrl() : void
+	{
+		$openid = new SteamOpenID( 'https://localhost/SteamOpenID/Example.php' );
+
+		$this->assertEquals(
+			'https://steamcommunity.com/openid/login' .
+			'?openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select' .
+			'&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select' .
+			'&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0' .
+			'&openid.mode=checkid_setup' .
+			'&openid.return_to=https%3A%2F%2Flocalhost%2FSteamOpenID%2FExample.php',
+			$openid->GetAuthUrl()
+		);
+	}
+
+	public function testAuthParams() : void
+	{
+		$openid = new SteamOpenID( 'https://localhost/SteamOpenID/Example.php' );
+
+		$this->assertEquals(
+			[
+				'openid.identity' => 'http://specs.openid.net/auth/2.0/identifier_select',
+				'openid.claimed_id' => 'http://specs.openid.net/auth/2.0/identifier_select',
+				'openid.ns' => 'http://specs.openid.net/auth/2.0',
+				'openid.mode' => 'checkid_setup',
+				'openid.return_to' => 'https://localhost/SteamOpenID/Example.php',
+			],
+			$openid->GetAuthParameters()
+		);
+	}
 }
 
 class TestOpenID extends SteamOpenID
