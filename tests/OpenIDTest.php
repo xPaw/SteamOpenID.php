@@ -163,6 +163,7 @@ final class OpenIDTest extends TestCase
 			try
 			{
 				$openid->Validate();
+				$this->fail();
 			}
 			catch( InvalidArgumentException $e )
 			{
@@ -185,6 +186,7 @@ final class OpenIDTest extends TestCase
 			try
 			{
 				$openid->Validate();
+				$this->fail();
 			}
 			catch( InvalidArgumentException $e )
 			{
@@ -219,6 +221,7 @@ final class OpenIDTest extends TestCase
 				try
 				{
 					$openid->Validate();
+					$this->fail();
 				}
 				catch( InvalidArgumentException $e )
 				{
