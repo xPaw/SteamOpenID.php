@@ -22,9 +22,9 @@ use InvalidArgumentException;
  */
 class SteamOpenID
 {
-	public const string STEAM_LOGIN = 'https://steamcommunity.com/openid/login';
-	private const string OPENID_NS = 'http://specs.openid.net/auth/2.0';
-	private const string EXPECTED_SIGNED = 'signed,op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle';
+	public const STEAM_LOGIN = 'https://steamcommunity.com/openid/login';
+	private const OPENID_NS = 'http://specs.openid.net/auth/2.0';
+	private const EXPECTED_SIGNED = 'signed,op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle';
 
 	private string $SelfURL;
 
