@@ -297,6 +297,108 @@ final class OpenIDTest extends TestCase
 			$openid->GetAuthParameters()
 		);
 	}
+
+	public function testInvalidSteamIDPattern() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_identity'] = 'https://steamcommunity.com/openid/id/123456789012345'; // Invalid SteamID format
+		$input['openid_claimed_id'] = $input['openid_identity'];
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->expectException(InvalidArgumentException::class);
+		$this->expectExceptionMessageMatches('/Wrong openid_identity/');
+		$openid->Validate();
+		$this->assertFalse($openid->RequestWasSent);
+	}
+
+	public function testReturnURLWithQueryParameters() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_return_to'] = 'https://localhost/SteamOpenID/Example.php?param1=value1&param2=value2';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->assertEquals('76561197972494985', $openid->Validate());
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testValidReturnURLWithQueryParameters() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_return_to'] = 'https://localhost/SteamOpenID/Example.php?param1=value1&param2=value2';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php?param1=value1', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->assertEquals('76561197972494985', $openid->Validate());
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testFailLoginForMalformedKeyValueResponse() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_sig'] = 'test_hack_return_malformed_response';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessageMatches('/Failed to verify login your with Steam/');
+		$openid->Validate();
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testFailLoginForEmptyResponse() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_sig'] = 'test_hack_return_empty_response';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessageMatches('/Failed to verify login your with Steam, not a valid OpenID 2.0 response/');
+		$openid->Validate();
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testFailLoginFor404Response() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_sig'] = 'test_hack_return_404';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessageMatches('/Failed to verify your login with Steam/');
+		$openid->Validate();
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testFailLoginFor500Response() : void
+	{
+		$input = self::DefaultInput;
+		$input['openid_sig'] = 'test_hack_return_500';
+
+		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
+
+		$this->assertTrue($openid->ShouldValidate());
+		$this->expectException(Exception::class);
+		$this->expectExceptionMessageMatches('/Failed to verify your login with Steam/');
+		$openid->Validate();
+		$this->assertTrue($openid->RequestWasSent);
+	}
+
+	public function testGetAuthParamsWithCustomReturnURL() : void
+	{
+		$openid = new SteamOpenID('https://example.com/login?param=value');
+
+		$params = $openid->GetAuthParameters();
+		$this->assertEquals('https://example.com/login?param=value', $params['openid.return_to']);
+	}
 }
 
 class TestOpenID extends SteamOpenID
@@ -336,6 +438,10 @@ class TestOpenID extends SteamOpenID
 			case 'test_hack_return_is_valid_no_colons': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid_true" ];
 			case 'test_hack_return_201': return [ 201, "ns:http://specs.openid.net/auth/2.0\nis_valid:true" ];
 			case 'test_hack_return_403': return [ 403, '' ];
+			case 'test_hack_return_404': return [ 404, 'Not Found' ];
+			case 'test_hack_return_500': return [ 500, 'Internal Server Error' ];
+			case 'test_hack_return_malformed_response': return [ 200, "ns:http://specs.openid.net/auth/2.0\ngarbage data" ];
+			case 'test_hack_return_empty_response': return [ 200, "" ];
 			default: throw new Exception( 'Unknown test openid_sig: ' . $Arguments[ 'openid_sig' ] );
 		}
 	}
