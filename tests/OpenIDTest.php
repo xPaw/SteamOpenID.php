@@ -399,6 +399,32 @@ final class OpenIDTest extends TestCase
 		$params = $openid->GetAuthParameters();
 		$this->assertEquals('https://example.com/login?param=value', $params['openid.return_to']);
 	}
+
+	public function testMinimumSteamID() : void
+	{
+		$input = self::DefaultInput;
+		$input[ 'openid_identity' ] = 'https://steamcommunity.com/openid/id/76561197960265729';
+		$input[ 'openid_claimed_id' ] = $input[ 'openid_identity' ];
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		$this->assertTrue( $openid->ShouldValidate() );
+		$this->assertEquals( '76561197960265729', $openid->Validate() );
+		$this->assertTrue( $openid->RequestWasSent );
+	}
+
+	public function testMaximumSteamID() : void
+	{
+		$input = self::DefaultInput;
+		$input[ 'openid_identity' ] = 'https://steamcommunity.com/openid/id/76561202255233023';
+		$input[ 'openid_claimed_id' ] = $input[ 'openid_identity' ];
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		$this->assertTrue( $openid->ShouldValidate() );
+		$this->assertEquals( '76561202255233023', $openid->Validate() );
+		$this->assertTrue( $openid->RequestWasSent );
+	}
 }
 
 class TestOpenID extends SteamOpenID

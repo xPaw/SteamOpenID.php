@@ -112,7 +112,7 @@ class SteamOpenID
 			throw new InvalidArgumentException( 'Wrong openid_return_to.' );
 		}
 
-		if( preg_match( '/^https:\/\/steamcommunity.com\/openid\/id\/(?<id>7656119[0-9]{10})\/?$/', $Arguments[ 'openid_identity' ], $CommunityID ) !== 1 )
+		if( preg_match( '/^https:\/\/steamcommunity.com\/openid\/id\/(?<id>76561[0-9]{12})\/?$/', $Arguments[ 'openid_identity' ], $CommunityID ) !== 1 )
 		{
 			throw new InvalidArgumentException( 'Wrong openid_identity.' );
 		}
