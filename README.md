@@ -48,3 +48,46 @@ else
 ```
 
 If you want to parse SteamIDs, take a look at [SteamID.php](https://github.com/xPaw/SteamID.php).
+
+### Advanced usage
+
+#### Passing GET parameters manually
+
+If you need to pass request parameters manually instead of using `$_GET`, you can provide them in the constructor:
+
+```php
+$params = [
+	'openid_mode' => $_GET['openid_mode'] ?? null,
+	// etc...
+];
+
+$SteamOpenID = new SteamOpenID( $ReturnToUrl, $params );
+```
+
+#### Custom HTTP client
+
+If you need to customize the HTTP request to Steam (e.g., using a different HTTP client, adding proxies, or custom timeouts), you can override the `SendSteamRequest` method:
+
+```php
+class CustomSteamOpenID extends SteamOpenID
+{
+	public function SendSteamRequest( array $Arguments ) : array
+	{
+		// Use your preferred HTTP client here
+		$httpClient = new YourHttpClient();
+
+		$response = $httpClient->post( self::SERVER, [
+			'form_params' => $Arguments,
+			'timeout' => 10,
+			'headers' => [
+				'User-Agent' => 'Your Custom User Agent'
+			]
+		] );
+
+		// array(http code as int, response as string)
+		return [ $response->getStatusCode(), $response->getBody() ];
+	}
+}
+
+$SteamOpenID = new CustomSteamOpenID( $ReturnToUrl );
+```
