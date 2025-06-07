@@ -51,7 +51,7 @@ class SteamOpenID
 	 */
 	public function GetAuthUrl() : string
 	{
-		return SteamOpenID::SERVER . '?' . http_build_query( $this->GetAuthParameters() );
+		return self::SERVER . '?' . http_build_query( $this->GetAuthParameters() );
 	}
 
 	/**
@@ -73,10 +73,10 @@ class SteamOpenID
 	/**
 	 * Validates OpenID data, and verifies with Steam.
 	 *
+	 * @return string Returns the CommunityID when validation succeeds
+	 *
 	 * @throws InvalidArgumentException Thrown when manipulation of the input parameters is detected.
 	 * @throws Exception Login failed to be validated against Steam servers.
-	 *
-	 * @return string Returns the CommunityID when validation succeeds
 	 */
 	public function Validate() : string
 	{
@@ -169,7 +169,9 @@ class SteamOpenID
 	 * You can override this method to send the request yourself.
 	 *
 	 * @codeCoverageIgnore
+	 *
 	 * @param array<string, string> $Arguments Parameters to send as POST fields.
+	 *
 	 * @return array{0: int, 1: string} A tuple that contains [http code as int, response as string]
 	 */
 	public function SendSteamRequest( array $Arguments ) : array
@@ -207,7 +209,7 @@ class SteamOpenID
 			'openid_response_nonce' => FILTER_UNSAFE_RAW,
 			'openid_assoc_handle' => FILTER_UNSAFE_RAW, // Steam just sends 1234567890
 			'openid_signed' => FILTER_UNSAFE_RAW,
-			'openid_sig' => FILTER_UNSAFE_RAW
+			'openid_sig' => FILTER_UNSAFE_RAW,
 		];
 
 		if( $this->InputParameters === null )
@@ -219,7 +221,7 @@ class SteamOpenID
 			$Arguments = filter_var_array( $this->InputParameters, $Filters );
 		}
 
-		if( !is_array( $Arguments ) ) // @phpstan-ignore-line
+		if( !is_array( $Arguments ) ) // @phpstan-ignore-line function.alreadyNarrowedType
 		{
 			throw new InvalidArgumentException( 'Parameter filter failed.' );
 		}
@@ -228,7 +230,7 @@ class SteamOpenID
 		{
 			// An array value will be FALSE if the filter fails, or NULL if the variable is not set.
 			// In our case we want everything to be a string.
-			if( empty( $Value ) || !is_string( $Value ) ) // @phpstan-ignore-line
+			if( empty( $Value ) || !is_string( $Value ) ) // @phpstan-ignore-line function.alreadyNarrowedType
 			{
 				throw new InvalidArgumentException( 'Wrong ' . $Key . ' is not a string' );
 			}
