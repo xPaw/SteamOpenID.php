@@ -112,6 +112,19 @@ class SteamOpenID
 			throw new InvalidArgumentException( 'Wrong openid_return_to.' );
 		}
 
+		// RFC3339 YYYY-MM-DDTHH:MM:SSZ followed by unique characters
+		if( preg_match( '/^([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z)/', $Arguments[ 'openid_response_nonce' ], $NonceMatch ) !== 1 )
+		{
+			throw new InvalidArgumentException( 'Wrong openid_response_nonce.' );
+		}
+
+		$NonceTime = strtotime( $NonceMatch[ 1 ] );
+
+		if( $NonceTime === false || abs( time() - $NonceTime ) > 300 )
+		{
+			throw new InvalidArgumentException( 'Nonce timestamp is too old.' );
+		}
+
 		if( preg_match( '/^https:\/\/steamcommunity.com\/openid\/id\/(?<id>76561[0-9]{12})\/?$/', $Arguments[ 'openid_identity' ], $CommunityID ) !== 1 )
 		{
 			throw new InvalidArgumentException( 'Wrong openid_identity.' );
