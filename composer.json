@@ -3,6 +3,13 @@
 	"description": "A correct and simple implementation of OpenID authentication for Steam",
 	"license": "MIT",
 	"homepage": "https://github.com/xPaw/SteamOpenID.php",
+	"funding":
+	[
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/xPaw"
+        }
+	],
 	"keywords":
 	[
 		"steam",
