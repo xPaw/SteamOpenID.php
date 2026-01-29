@@ -36,10 +36,33 @@ class SteamOpenID
 
 	/**
 	 * @param string $ReturnURL URL to return to from Steam, this will also validate the "openid.return_to" parameter
+	 *                          Ensure this URL contains a path (e.g., /login/callback) to prevent prefix attacks
 	 * @param ?array<string, mixed> $Params Request parameters provided in the GET parameters
 	 */
 	public function __construct( string $ReturnURL, ?array $Params = null )
 	{
+		$parsed = parse_url( $ReturnURL );
+
+		if( $parsed === false )
+		{
+			throw new InvalidArgumentException( 'ReturnURL is not a valid URL.' );
+		}
+
+		if( !isset( $parsed[ 'scheme' ] ) || ( $parsed[ 'scheme' ] !== 'https' && $parsed[ 'scheme' ] !== 'http' ) )
+		{
+			throw new InvalidArgumentException( 'ReturnURL must start with https:// or http://' );
+		}
+
+		if( !isset( $parsed[ 'host' ] ) || $parsed[ 'host' ] === '' )
+		{
+			throw new InvalidArgumentException( 'ReturnURL must contain a host.' );
+		}
+
+		if( !isset( $parsed[ 'path' ] ) || $parsed[ 'path' ] === '' )
+		{
+			throw new InvalidArgumentException( 'ReturnURL must contain a path to prevent prefix attacks.' );
+		}
+
 		$this->ReturnURL = $ReturnURL;
 		$this->InputParameters = $Params;
 	}
@@ -148,12 +171,12 @@ class SteamOpenID
 
 		if( ( $KeyValues[ 'ns' ] ?? null ) !== self::OPENID_NS )
 		{
-			throw new Exception( 'Failed to verify login your with Steam, not a valid OpenID 2.0 response.' );
+			throw new Exception( 'Failed to verify your login with Steam, not a valid OpenID 2.0 response.' );
 		}
 
 		if( ( $KeyValues[ 'is_valid' ] ?? '' ) !== 'true' )
 		{
-			throw new Exception( 'Failed to verify login your with Steam.' );
+			throw new Exception( 'Failed to verify your login with Steam.' );
 		}
 
 		return $CommunityID[ 'id' ];

@@ -44,9 +44,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -58,9 +66,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -72,9 +88,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -86,9 +110,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -100,9 +132,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/rate limit/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/rate limit/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -114,9 +154,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify your login with Steam/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -128,9 +176,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/valid OpenID/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/valid OpenID/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -251,9 +307,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -264,9 +327,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_claimed_id, should equal to openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_claimed_id, should equal to openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -309,9 +379,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
 
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessageMatches('/Wrong openid_identity/');
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse($openid->RequestWasSent);
 	}
 
@@ -347,9 +424,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
 
 		$this->assertTrue($openid->ShouldValidate());
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessageMatches('/Failed to verify login your with Steam/');
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue($openid->RequestWasSent);
 	}
 
@@ -361,9 +446,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
 
 		$this->assertTrue($openid->ShouldValidate());
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessageMatches('/Failed to verify login your with Steam, not a valid OpenID 2.0 response/');
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam, not a valid OpenID 2.0 response/', $e->getMessage() );
+		}
+
 		$this->assertTrue($openid->RequestWasSent);
 	}
 
@@ -375,9 +468,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
 
 		$this->assertTrue($openid->ShouldValidate());
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessageMatches('/Failed to verify your login with Steam/');
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue($openid->RequestWasSent);
 	}
 
@@ -389,9 +490,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID('https://localhost/SteamOpenID/Example.php', $input);
 
 		$this->assertTrue($openid->ShouldValidate());
-		$this->expectException(Exception::class);
-		$this->expectExceptionMessageMatches('/Failed to verify your login with Steam/');
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue($openid->RequestWasSent);
 	}
 
@@ -450,9 +559,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -464,9 +580,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -478,9 +601,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -492,9 +622,79 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_identity/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
+		$this->assertFalse( $openid->RequestWasSent );
+	}
+
+	public function testInvalidSteamIDWithHttpScheme() : void
+	{
+		$input = self::GetDefaultInput();
+		$input[ 'openid_identity' ] = 'http://steamcommunity.com/openid/id/76561197972494985';
+		$input[ 'openid_claimed_id' ] = $input[ 'openid_identity' ];
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
+		$this->assertFalse( $openid->RequestWasSent );
+	}
+
+	public function testInvalidSteamIDWithWwwSubdomain() : void
+	{
+		$input = self::GetDefaultInput();
+		$input[ 'openid_identity' ] = 'https://www.steamcommunity.com/openid/id/76561197972494985';
+		$input[ 'openid_claimed_id' ] = $input[ 'openid_identity' ];
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
+		$this->assertFalse( $openid->RequestWasSent );
+	}
+
+	public function testInvalidSteamIDWithDoubleSlashes() : void
+	{
+		$input = self::GetDefaultInput();
+		$input[ 'openid_identity' ] = 'https://steamcommunity.com//openid/id/76561197972494985';
+		$input[ 'openid_claimed_id' ] = $input[ 'openid_identity' ];
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_identity/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -506,9 +706,40 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/rate limit/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/rate limit/', $e->getMessage() );
+		}
+
+		$this->assertTrue( $openid->RequestWasSent );
+	}
+
+	public function testFailLoginForCurlFailure() : void
+	{
+		$input = self::GetDefaultInput();
+		$input[ 'openid_sig' ] = 'test_hack_return_curl_failure';
+
+		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
+
+		$this->assertTrue( $openid->ShouldValidate() );
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+			$this->assertMatchesRegularExpression( '/HTTP 0/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -520,9 +751,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify login your with Steam, not a valid OpenID 2.0 response/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam, not a valid OpenID 2.0 response/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -534,9 +773,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify login your with Steam/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -548,9 +795,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify login your with Steam/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -562,9 +817,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify login your with Steam/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -576,9 +839,17 @@ final class OpenIDTest extends TestCase
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
 		$this->assertTrue( $openid->ShouldValidate() );
-		$this->expectException( Exception::class );
-		$this->expectExceptionMessageMatches( '/Failed to verify login your with Steam, not a valid OpenID 2.0 response/' );
-		$openid->Validate();
+
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( Exception $e )
+		{
+			$this->assertMatchesRegularExpression( '/Failed to verify your login with Steam, not a valid OpenID 2.0 response/', $e->getMessage() );
+		}
+
 		$this->assertTrue( $openid->RequestWasSent );
 	}
 
@@ -589,9 +860,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_mode/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_mode/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -614,18 +892,73 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_return_to/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_return_to/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
 	public function testConstructorWithEmptyReturnURL() : void
 	{
-		$openid = new SteamOpenID( '' );
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/must start with https:\/\/ or http:\/\//' );
+		new SteamOpenID( '' );
+	}
 
-		$params = $openid->GetAuthParameters();
-		$this->assertEquals( '', $params[ 'openid.return_to' ] );
+	public function testConstructorWithoutPath() : void
+	{
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/must contain a path/' );
+		new SteamOpenID( 'https://example.com' );
+	}
+
+	public function testConstructorWithoutScheme() : void
+	{
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/must start with https:\/\/ or http:\/\//' );
+		new SteamOpenID( '//example.com/callback' );
+	}
+
+	public function testConstructorWithInvalidScheme() : void
+	{
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/must start with https:\/\/ or http:\/\//' );
+		new SteamOpenID( 'ftp://example.com/callback' );
+	}
+
+	public function testConstructorWithMalformedURL() : void
+	{
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/not a valid URL/' );
+		new SteamOpenID( 'https:///callback' );
+	}
+
+	public function testConstructorWithoutHost() : void
+	{
+		$this->expectException( InvalidArgumentException::class );
+		$this->expectExceptionMessageMatches( '/must contain a host/' );
+		new SteamOpenID( 'https:/callback' );
+	}
+
+	public function testConstructorWithHttpScheme() : void
+	{
+		$openid = new SteamOpenID( 'http://example.com/callback' );
+
+		$this->assertEquals( 'http://example.com/callback', $openid->ReturnURL );
+	}
+
+	public function testConstructorWithMinimalPath() : void
+	{
+		$openid = new SteamOpenID( 'https://example.com/' );
+
+		$this->assertEquals( 'https://example.com/', $openid->ReturnURL );
 	}
 
 	public function testConstructorWithEmptyParametersArray() : void
@@ -658,9 +991,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_response_nonce/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_response_nonce/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -671,9 +1011,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_response_nonce/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_response_nonce/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -684,9 +1031,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_response_nonce/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_response_nonce/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -699,9 +1053,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -714,9 +1075,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -741,9 +1109,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -755,9 +1130,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_response_nonce/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_response_nonce/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -768,9 +1150,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Wrong openid_response_nonce/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Wrong openid_response_nonce/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -781,9 +1170,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -794,9 +1190,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -807,9 +1210,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -820,9 +1230,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -833,9 +1250,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -846,9 +1270,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -859,9 +1290,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -872,9 +1310,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -885,9 +1330,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 
@@ -898,9 +1350,16 @@ final class OpenIDTest extends TestCase
 
 		$openid = new TestOpenID( 'https://localhost/SteamOpenID/Example.php', $input );
 
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessageMatches( '/Nonce timestamp is too old/' );
-		$openid->Validate();
+		try
+		{
+			$openid->Validate();
+			$this->fail( 'Expected exception was not thrown' );
+		}
+		catch( InvalidArgumentException $e )
+		{
+			$this->assertMatchesRegularExpression( '/Nonce timestamp is too old/', $e->getMessage() );
+		}
+
 		$this->assertFalse( $openid->RequestWasSent );
 	}
 }
@@ -952,6 +1411,7 @@ class TestOpenID extends SteamOpenID
 			case 'test_hack_return_is_valid_false': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid:false" ];
 			case 'test_hack_return_is_valid_maybe': return [ 200, "ns:http://specs.openid.net/auth/2.0\nis_valid:maybe" ];
 			case 'test_hack_return_whitespace_only': return [ 200, "   \n\t\n   " ];
+			case 'test_hack_return_curl_failure': return [ 0, '' ];
 			default: throw new Exception( 'Unknown test openid_sig: ' . $Arguments[ 'openid_sig' ] );
 		}
 	}
